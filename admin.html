@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Jorling Seguidores</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="electric-bg"></div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-shield-alt"></i> Panel de Administración</h1>
+                <p>Jorling Seguidores</p>
+            </div>
+            <div class="admin-actions">
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <main class="admin-dashboard">
+        <div class="container">
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+                <div class="stat-card electric-border">
+                    <div class="card-content">
+                        <i class="fas fa-users"></i>
+                        <h3>Total Usuarios</h3>
+                        <p id="totalUsers">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card electric-border">
+                    <div class="card-content">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Total Pedidos</h3>
+                        <p id="totalOrders">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card electric-border">
+                    <div class="card-content">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h3>Ingresos Totales</h3>
+                        <p id="totalRevenue">$0.00</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card electric-border">
+                    <div class="card-content">
+                        <i class="fas fa-undo"></i>
+                        <h3>Reembolsos Hoy</h3>
+                        <p id="todayRefunds">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Section -->
+            <div class="quick-actions">
+                <h2>Acciones Rápidas</h2>
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="showQuickRecharge()">
+                        <i class="fas fa-bolt"></i>
+                        <span>Recarga Rápida</span>
+                    </button>
+                    <button class="quick-btn" onclick="showOrderSearch()">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar Pedido</span>
+                    </button>
+                    <button class="quick-btn" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Actualizar Datos</span>
+                    </button>
+                    <button class="quick-btn" onclick="exportUsers()">
+                        <i class="fas fa-download"></i>
+                        <span>Exportar Usuarios</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Order Search Modal -->
+            <div id="orderSearchModal" class="modal">
+                <div class="modal-content electric-form">
+                    <span class="close" onclick="closeModal('orderSearchModal')">&times;</span>
+                    <h2><i class="fas fa-search"></i> Buscar Pedido por ID</h2>
+                    <form id="orderSearchForm">
+                        <div class="input-group">
+                            <label for="orderIdSearch">ID del Pedido:</label>
+                            <input type="text" id="orderIdSearch" placeholder="Ej: ORD-1234567890" required>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-search"></i> Buscar Pedido
+                        </button>
+                    </form>
+                    <div id="orderSearchResults" class="search-results"></div>
+                </div>
+            </div>
+
+            <!-- Quick Recharge Modal -->
+            <div id="quickRechargeModal" class="modal">
+                <div class="modal-content electric-form">
+                    <span class="close" onclick="closeModal('quickRechargeModal')">&times;</span>
+                    <h2><i class="fas fa-zap"></i> Recarga Rápida</h2>
+                    <form id="quickRechargeForm">
+                        <div class="input-group">
+                            <label for="quickUserSearch">Buscar Usuario:</label>
+                            <input type="text" id="quickUserSearch" placeholder="Nombre de usuario o email" required>
+                            <div id="userSuggestions" class="suggestions-list"></div>
+                        </div>
+                        <div class="quick-amounts">
+                            <label>Montos Rápidos:</label>
+                            <div class="amount-buttons">
+                                <button type="button" class="amount-btn" onclick="setQuickAmount(5)">$5</button>
+                                <button type="button" class="amount-btn" onclick="setQuickAmount(10)">$10</button>
+                                <button type="button" class="amount-btn" onclick="setQuickAmount(25)">$25</button>
+                                <button type="button" class="amount-btn" onclick="setQuickAmount(50)">$50</button>
+                                <button type="button" class="amount-btn" onclick="setQuickAmount(100)">$100</button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="quickAmount">Monto Personalizado ($):</label>
+                            <input type="number" id="quickAmount" step="0.01" min="0.01" placeholder="0.00">
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-lightning-bolt"></i> Recargar Ahora
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- User Management -->
+            <div class="management-section">
+                <h2>Gestión de Usuarios</h2>
+                <div class="search-bar">
+                    <input type="text" id="userSearch" placeholder="Buscar usuario por nombre o email...">
+                    <button onclick="searchUsers()"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Saldo</th>
+                                <th>Pedidos</th>
+                                <th>Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add Balance Modal -->
+            <div id="addBalanceModal" class="modal">
+                <div class="modal-content electric-form">
+                    <span class="close" onclick="closeModal('addBalanceModal')">&times;</span>
+                    <h2><i class="fas fa-wallet"></i> Añadir Saldo</h2>
+                    <form id="addBalanceForm">
+                        <div class="input-group">
+                            <label>Usuario:</label>
+                            <input type="text" id="selectedUserName" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Saldo Actual:</label>
+                            <input type="text" id="currentBalance" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="amountToAdd">Cantidad a Añadir ($):</label>
+                            <input type="number" id="amountToAdd" step="0.01" min="0.01" required>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-plus"></i> Añadir Saldo
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="recent-orders-admin">
+                <h2>Pedidos Recientes</h2>
+                <div class="orders-table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>ID Pedido</th>
+                                <th>Usuario</th>
+                                <th>Servicio</th>
+                                <th>URL</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mass Acceleration Modal -->
+            <div id="massAccelerationModal" class="modal">
+                <div class="modal-content electric-form">
+                    <span class="close" onclick="closeModal('massAccelerationModal')">&times;</span>
+                    <h2><i class="fas fa-rocket"></i> Aceleración Masiva de Pedido</h2>
+                    <form id="massAccelerationForm">
+                        <div class="input-group">
+                            <label>ID de Pedido:</label>
+                            <input type="text" id="accelerationOrderId" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Usuario:</label>
+                            <input type="text" id="accelerationUserName" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Servicio:</label>
+                            <input type="text" id="accelerationService" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Cantidad Solicitada:</label>
+                            <input type="text" id="accelerationQuantity" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Progreso Actual:</label>
+                            <input type="text" id="accelerationProgress" readonly>
+                        </div>
+                        <div class="acceleration-options">
+                            <h4>Opciones de Aceleración:</h4>
+                            <label class="checkbox-label">
+                                <input type="radio" name="accelerationType" value="turbo" checked>
+                                <span>🚀 Turbo (2x velocidad) - Completar en 1-2 horas</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="accelerationType" value="super">
+                                <span>⚡ Super (5x velocidad) - Completar en 30 minutos</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="radio" name="accelerationType" value="instant">
+                                <span>💥 Instantáneo (10x velocidad) - Completar en 5-10 minutos</span>
+                            </label>
+                        </div>
+                        <div class="acceleration-warning">
+                            <i class="fas fa-info-circle"></i>
+                            <p>La aceleración masiva activará bots especiales para completar el pedido más rápido. El usuario será notificado del progreso acelerado.</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="accelerationReason">Motivo de la Aceleración:</label>
+                            <select id="accelerationReason" required>
+                                <option value="">Seleccionar motivo...</option>
+                                <option value="customer_complaint">Queja del cliente</option>
+                                <option value="slow_delivery">Entrega lenta</option>
+                                <option value="priority_customer">Cliente prioritario</option>
+                                <option value="compensation">Compensación</option>
+                                <option value="technical_issue">Problema técnico resuelto</option>
+                                <option value="other">Otro motivo</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="accelerationOtherReasonGroup" style="display: none;">
+                            <label for="accelerationOtherReason">Especificar otro motivo:</label>
+                            <input type="text" id="accelerationOtherReason" placeholder="Describe el motivo de la aceleración">
+                        </div>
+                        <button type="submit" class="btn-submit btn-acceleration">
+                            <i class="fas fa-rocket"></i> Activar Aceleración Masiva
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Refund Modal -->
+            <div id="refundModal" class="modal">
+                <div class="modal-content electric-form">
+                    <span class="close" onclick="closeModal('refundModal')">&times;</span>
+                    <h2><i class="fas fa-undo"></i> Procesar Reembolso</h2>
+                    <form id="refundForm">
+                        <div class="input-group">
+                            <label>ID de Pedido:</label>
+                            <input type="text" id="refundOrderId" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Usuario:</label>
+                            <input type="text" id="refundUserName" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Servicio:</label>
+                            <input type="text" id="refundService" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Monto del Pedido:</label>
+                            <input type="text" id="refundAmount" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="refundReason">Motivo del Reembolso:</label>
+                            <select id="refundReason" required>
+                                <option value="">Seleccionar motivo...</option>
+                                <option value="no_delivery">No se entregaron seguidores</option>
+                                <option value="partial_delivery">Entrega parcial</option>
+                                <option value="wrong_link">Enlace incorrecto</option>
+                                <option value="customer_request">Solicitud del cliente</option>
+                                <option value="bot_failure">Falla en los bots</option>
+                                <option value="other">Otro motivo</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="otherReasonGroup" style="display: none;">
+                            <label for="otherReason">Especificar otro motivo:</label>
+                            <input type="text" id="otherReason" placeholder="Describe el motivo del reembolso">
+                        </div>
+                        <div class="refund-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Esta acción reembolsará el monto completo al usuario y marcará el pedido como reembolsado.</p>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-undo"></i> Procesar Reembolso
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Cancel Order Modal -->
+            <div id="cancelOrderModal" class="modal">
+                <div class="modal-content electric-form">
+                    <span class="close" onclick="closeModal('cancelOrderModal')">&times;</span>
+                    <h2><i class="fas fa-times-circle"></i> Cancelar Pedido</h2>
+                    <form id="cancelOrderForm">
+                        <div class="input-group">
+                            <label>ID de Pedido:</label>
+                            <input type="text" id="cancelOrderId" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Usuario:</label>
+                            <input type="text" id="cancelUserName" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Servicio:</label>
+                            <input type="text" id="cancelService" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Monto del Pedido:</label>
+                            <input type="text" id="cancelAmount" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="cancelReason">Motivo de Cancelación:</label>
+                            <select id="cancelReason" required>
+                                <option value="">Seleccionar motivo...</option>
+                                <option value="customer_request">Solicitud del cliente</option>
+                                <option value="payment_issue">Problema de pago</option>
+                                <option value="invalid_url">URL inválida</option>
+                                <option value="service_unavailable">Servicio no disponible</option>
+                                <option value="admin_decision">Decisión administrativa</option>
+                                <option value="other">Otro motivo</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="cancelOtherReasonGroup" style="display: none;">
+                            <label for="cancelOtherReason">Especificar otro motivo:</label>
+                            <input type="text" id="cancelOtherReason" placeholder="Describe el motivo de cancelación">
+                        </div>
+                        <div class="cancel-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="refundOnCancel" checked>
+                                <span>Reembolsar monto al usuario</span>
+                            </label>
+                        </div>
+                        <div class="cancel-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Esta acción cancelará el pedido permanentemente. Si está marcado el reembolso, el monto se añadirá al saldo del usuario.</p>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-times-circle"></i> Cancelar Pedido
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Delete Account Modal -->
+            <div id="deleteAccountModal" class="modal">
+                <div class="modal-content electric-form">
+                    <span class="close" onclick="closeModal('deleteAccountModal')">&times;</span>
+                    <h2><i class="fas fa-user-times"></i> Eliminar Cuenta de Usuario</h2>
+                    <form id="deleteAccountForm">
+                        <div class="input-group">
+                            <label>Usuario:</label>
+                            <input type="text" id="deleteUserName" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Email:</label>
+                            <input type="text" id="deleteUserEmail" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Saldo Actual:</label>
+                            <input type="text" id="deleteUserBalance" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label>Total de Pedidos:</label>
+                            <input type="text" id="deleteUserOrders" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="deleteReason">Motivo de Eliminación:</label>
+                            <select id="deleteReason" required>
+                                <option value="">Seleccionar motivo...</option>
+                                <option value="user_request">Solicitud del usuario</option>
+                                <option value="violation">Violación de términos</option>
+                                <option value="fraud">Actividad fraudulenta</option>
+                                <option value="inactive">Cuenta inactiva</option>
+                                <option value="duplicate">Cuenta duplicada</option>
+                                <option value="other">Otro motivo</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="deleteOtherReasonGroup" style="display: none;">
+                            <label for="deleteOtherReason">Especificar otro motivo:</label>
+                            <input type="text" id="deleteOtherReason" placeholder="Describe el motivo de eliminación">
+                        </div>
+                        <div class="delete-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="cancelAllOrders" checked>
+                                <span>Cancelar todos los pedidos pendientes</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="refundAllOrders" checked>
+                                <span>Reembolsar pedidos cancelados</span>
+                            </label>
+                        </div>
+                        <div class="delete-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p><strong>¡ADVERTENCIA!</strong> Esta acción eliminará permanentemente la cuenta del usuario y todos sus datos. Esta acción NO se puede deshacer.</p>
+                        </div>
+                        <div class="confirmation-input">
+                            <label for="deleteConfirmation">Para confirmar, escribe "ELIMINAR" en mayúsculas:</label>
+                            <input type="text" id="deleteConfirmation" placeholder="ELIMINAR" required>
+                        </div>
+                        <button type="submit" class="btn-submit btn-danger">
+                            <i class="fas fa-user-times"></i> Eliminar Cuenta Permanentemente
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success/Error Messages -->
+    <div id="successMessage" class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <span id="successText"></span>
+    </div>
+
+    <div id="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorText"></span>
+    </div>
+
+    <script>
+        // Simple admin authentication
+        const ADMIN_PASSWORD = "jorling2025admin"
+        let isAuthenticated = false
+        let users = []
+        let selectedUserId = null
+        let selectedOrderData = null
+
+        // Check admin authentication
+        document.addEventListener("DOMContentLoaded", () => {
+            const adminAuth = localStorage.getItem("adminAuth")
+            if (adminAuth !== ADMIN_PASSWORD) {
+                const password = prompt("Ingrese la contraseña de administrador:")
+                if (password === ADMIN_PASSWORD) {
+                    localStorage.setItem("adminAuth", ADMIN_PASSWORD)
+                    isAuthenticated = true
+                    initializeAdmin()
+                } else {
+                    alert("Contraseña incorrecta")
+                    window.location.href = "index.html"
+                }
+            } else {
+                isAuthenticated = true
+                initializeAdmin()
+            }
+        })
+
+        function initializeAdmin() {
+            loadUsers()
+            loadStats()
+            loadRecentOrders()
+            setupEventListeners()
+        }
+
+        // Actualizar setupEventListeners para incluir los nuevos formularios
+        function setupEventListeners() {
+            // Order search form
+            document.getElementById("orderSearchForm").addEventListener("submit", function(e) {
+                e.preventDefault()
+                searchOrderById()
+            })
+
+            // Quick recharge form
+            document.getElementById("quickRechargeForm").addEventListener("submit", function(e) {
+                e.preventDefault()
+                processQuickRecharge()
+            })
+
+            // Add balance form
+            document.getElementById("addBalanceForm").addEventListener("submit", function(e) {
+                e.preventDefault()
+                processAddBalance()
+            })
+
+            // Mass acceleration form
+            document.getElementById("massAccelerationForm").addEventListener("submit", function(e) {
+                e.preventDefault()
+                processMassAcceleration()
+            })
+
+            // Refund form
+            document.getElementById("refundForm").addEventListener("submit", function(e) {
+                e.preventDefault()
+                processRefund()
+            })
+
+            // Cancel order form
+            document.getElementById("cancelOrderForm").addEventListener("submit", function(e) {
+                e.preventDefault()
+                processCancelOrder()
+            })
+
+            // Delete account form
+            document.getElementById("deleteAccountForm").addEventListener("submit", function(e) {
+                e.preventDefault()
+                processDeleteAccount()
+            })
+
+            // Acceleration reason change
+            document.getElementById("accelerationReason").addEventListener("change", function() {
+                const otherReasonGroup = document.getElementById("accelerationOtherReasonGroup")
+                if (this.value === "other") {
+                    otherReasonGroup.style.display = "block"
+                } else {
+                    otherReasonGroup.style.display = "none"
+                }
+            })
+
+            // Refund reason change
+            document.getElementById("refundReason").addEventListener("change", function() {
+                const otherReasonGroup = document.getElementById("otherReasonGroup")
+                if (this.value === "other") {
+                    otherReasonGroup.style.display = "block"
+                } else {
+                    otherReasonGroup.style.display = "none"
+                }
+            })
+
+            // Cancel reason change
+            document.getElementById("cancelReason").addEventListener("change", function() {
+                const otherReasonGroup = document.getElementById("cancelOtherReasonGroup")
+                if (this.value === "other") {
+                    otherReasonGroup.style.display = "block"
+                } else {
+                    otherReasonGroup.style.display = "none"
+                }
+            })
+
+            // Delete reason change
+            document.getElementById("deleteReason").addEventListener("change", function() {
+                const otherReasonGroup = document.getElementById("deleteOtherReasonGroup")
+                if (this.value === "other") {
+                    otherReasonGroup.style.display = "block"
+                } else {
+                    otherReasonGroup.style.display = "none"
+                }
+            })
+
+            // User search suggestions
+            document.getElementById("quickUserSearch").addEventListener("input", function() {
+                loadUserSuggestions()
+            })
+        }
+
+        function loadUsers() {
+            users = JSON.parse(localStorage.getItem("jorlingUsers")) || []
+            displayUsers(users)
+        }
+
+        function loadStats() {
+            const totalUsers = users.length
+            const totalOrders = users.reduce((sum, user) => sum + (user.orders ? user.orders.length : 0), 0)
+            const totalRevenue = users.reduce(
+                (sum, user) => sum + (user.orders ? user.orders.reduce((orderSum, order) => orderSum + (order.price || 0), 0) : 0),
+                0,
+            )
+
+            const today = new Date().toDateString()
+            const todayRefunds = users.reduce(
+                (sum, user) => sum + (user.orders ? user.orders.filter((order) => 
+                    order.status === 'refunded' && new Date(order.refundedAt || '').toDateString() === today
+                ).length : 0),
+                0,
+            )
+
+            document.getElementById("totalUsers").textContent = totalUsers
+            document.getElementById("totalOrders").textContent = totalOrders
+            document.getElementById("totalRevenue").textContent = `$${totalRevenue.toFixed(2)}`
+            document.getElementById("todayRefunds").textContent = todayRefunds
+        }
+
+        function displayUsers(usersToShow) {
+            const tbody = document.getElementById("usersTableBody")
+
+            if (usersToShow.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #999;">No hay usuarios registrados</td></tr>'
+                return
+            }
+
+            const usersHTML = usersToShow
+                .map(
+                    (user) => `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>$${(user.balance || 0).toFixed(2)}</td>
+                        <td>${user.orders ? user.orders.length : 0}</td>
+                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td>
+                            <button class="action-btn btn-add-balance" onclick="showAddBalance(${user.id})">
+                                <i class="fas fa-plus"></i> Añadir Saldo
+                            </button>
+                            <button class="action-btn btn-view-orders" onclick="viewUserOrders(${user.id})">
+                                <i class="fas fa-eye"></i> Ver Pedidos
+                            </button>
+                            <button class="action-btn btn-delete-user" onclick="showDeleteAccountModal(${user.id})">
+                                <i class="fas fa-user-times"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `,
+                )
+                .join("")
+
+            tbody.innerHTML = usersHTML
+        }
+
+        function searchUsers() {
+            const searchTerm = document.getElementById("userSearch").value.toLowerCase()
+            const filteredUsers = users.filter(
+                (user) => user.username.toLowerCase().includes(searchTerm) || user.email.toLowerCase().includes(searchTerm),
+            )
+            displayUsers(filteredUsers)
+        }
+
+        function showOrderSearch() {
+            document.getElementById("orderSearchModal").style.display = "block"
+        }
+
+        function searchOrderById() {
+            const orderId = document.getElementById("orderIdSearch").value.trim()
+            const resultsDiv = document.getElementById("orderSearchResults")
+
+            if (!orderId) {
+                showMessage("Por favor ingresa un ID de pedido", "error")
+                return
+            }
+
+            // Buscar el pedido en todos los usuarios
+            let foundOrder = null
+            let foundUser = null
+
+            for (const user of users) {
+                if (user.orders) {
+                    for (const order of user.orders) {
+                        if (order.id.toString() === orderId || `ORD-${order.id}` === orderId) {
+                            foundOrder = order
+                            foundUser = user
+                            break
+                        }
+                    }
+                }
+                if (foundOrder) break
+            }
+
+            if (foundOrder) {
+                const statusText = {
+                    pending: "Pendiente",
+                    processing: "Procesando", 
+                    completed: "Completado",
+                    failed: "Fallido",
+                    refunded: "Reembolsado",
+                    cancelled: "Cancelado"
+                }
+
+                const serviceNames = {
+                    instagram: "Instagram",
+                    tiktok: "TikTok",
+                    youtube: "YouTube",
+                    facebook: "Facebook",
+                    twitter: "X (Twitter)",
+                    twitch: "Twitch",
+                    telegram: "Telegram",
+                }
+
+                resultsDiv.innerHTML = `
+                    <div class="order-result">
+                        <h3>Pedido Encontrado</h3>
+                        <div class="order-details">
+                            <p><strong>ID:</strong> ORD-${foundOrder.id}</p>
+                            <p><strong>Usuario:</strong> ${foundUser.username} (${foundUser.email})</p>
+                            <p><strong>Servicio:</strong> ${serviceNames[foundOrder.service] || foundOrder.service}</p>
+                            <p><strong>URL:</strong> <a href="${foundOrder.url}" target="_blank">${foundOrder.url}</a></p>
+                            <p><strong>Cantidad:</strong> ${foundOrder.quantity}</p>
+                            <p><strong>Precio:</strong> $${foundOrder.price.toFixed(4)}</p>
+                            <p><strong>Estado:</strong> <span class="status-${foundOrder.status}">${statusText[foundOrder.status]}</span></p>
+                            <p><strong>Fecha:</strong> ${new Date(foundOrder.createdAt).toLocaleString()}</p>
+                            ${foundOrder.progress ? `<p><strong>Progreso:</strong> ${foundOrder.progress.toFixed(1)}%</p>` : ''}
+                        </div>
+                        <div class="order-actions">
+                            ${foundOrder.status !== 'refunded' && foundOrder.status !== 'completed' && foundOrder.status !== 'cancelled' ? 
+                                `<button class="btn-acceleration" onclick="showMassAccelerationModal('${foundOrder.id}', '${foundUser.username}', '${foundOrder.service}', ${foundOrder.quantity}, ${foundOrder.progress || 0})">
+                                    <i class="fas fa-rocket"></i> Aceleración Masiva
+                                </button>
+                                <button class="btn-refund" onclick="showRefundModal('${foundOrder.id}', '${foundUser.username}', '${foundOrder.service}', ${foundOrder.price})">
+                                    <i class="fas fa-undo"></i> Procesar Reembolso
+                                </button>` : ''
+                            }
+                            <button class="btn-view-user" onclick="viewUserDetails(${foundUser.id})">
+                                <i class="fas fa-user"></i> Ver Usuario
+                            </button>
+                        </div>
+                    </div>
+                `
+            } else {
+                resultsDiv.innerHTML = `
+                    <div class="order-result">
+                        <p style="color: #ff6b6b; text-align: center;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            No se encontró ningún pedido con ID: ${orderId}
+                        </p>
+                    </div>
+                `
+            }
+        }
+
+        function showMassAccelerationModal(orderId, username, service, quantity, progress) {
+            selectedOrderData = { id: orderId, username, service, quantity, progress }
+            
+            document.getElementById("accelerationOrderId").value = `ORD-${orderId}`
+            document.getElementById("accelerationUserName").value = username
+            document.getElementById("accelerationService").value = service
+            document.getElementById("accelerationQuantity").value = quantity
+            document.getElementById("accelerationProgress").value = `${progress.toFixed(1)}%`
+            
+            closeModal("orderSearchModal")
+            document.getElementById("massAccelerationModal").style.display = "block"
+        }
+
+        function processMassAcceleration() {
+            if (!selectedOrderData) {
+                showMessage("Error: No hay datos de pedido seleccionados", "error")
+                return
+            }
+
+            const accelerationType = document.querySelector('input[name="accelerationType"]:checked').value
+            const reason = document.getElementById("accelerationReason").value
+            const otherReason = document.getElementById("accelerationOtherReason").value
+
+            if (!reason) {
+                showMessage("Por favor selecciona un motivo para la aceleración", "error")
+                return
+            }
+
+            if (reason === "other" && !otherReason.trim()) {
+                showMessage("Por favor especifica el motivo de la aceleración", "error")
+                return
+            }
+
+            // Buscar y actualizar el pedido
+            let orderFound = false
+            for (const user of users) {
+                if (user.orders) {
+                    for (const order of user.orders) {
+                        if (order.id.toString() === selectedOrderData.id.toString()) {
+                            // Activar aceleración masiva
+                            order.accelerated = true
+                            order.accelerationType = accelerationType
+                            order.acceleratedAt = new Date().toISOString()
+                            order.accelerationReason = reason === "other" ? otherReason : reason
+                            order.acceleratedBy = "admin"
+                            order.status = 'processing'
+
+                            // Establecer tiempo estimado según tipo de aceleración
+                            const accelerationTimes = {
+                                turbo: "1-2 horas",
+                                super: "30 minutos", 
+                                instant: "5-10 minutos"
+                            }
+                            order.estimatedCompletion = accelerationTimes[accelerationType]
+
+                            orderFound = true
+                            break
+                        }
+                    }
+                }
+                if (orderFound) break
+            }
+
+            if (orderFound) {
+                // Guardar cambios
+                localStorage.setItem("jorlingUsers", JSON.stringify(users))
+
+                // Registrar la aceleración
+                const accelerationRecord = {
+                    orderId: selectedOrderData.id,
+                    username: selectedOrderData.username,
+                    accelerationType: accelerationType,
+                    reason: reason === "other" ? otherReason : reason,
+                    processedAt: new Date().toISOString(),
+                    processedBy: "admin"
+                }
+
+                let accelerations = JSON.parse(localStorage.getItem("jorlingAccelerations")) || []
+                accelerations.push(accelerationRecord)
+                localStorage.setItem("jorlingAccelerations", JSON.stringify(accelerations))
+
+                // Simular activación de bots especiales
+                activateSpecialBots(selectedOrderData.id, accelerationType)
+
+                // Actualizar displays
+                loadUsers()
+                loadStats()
+                loadRecentOrders()
+
+                // Cerrar modal y mostrar éxito
+                closeModal("massAccelerationModal")
+                const accelerationNames = {
+                    turbo: "Turbo (2x velocidad)",
+                    super: "Super (5x velocidad)",
+                    instant: "Instantáneo (10x velocidad)"
+                }
+                showMessage(`¡Aceleración ${accelerationNames[accelerationType]} activada para el pedido ORD-${selectedOrderData.id}!`, "success")
+
+                selectedOrderData = null
+            } else {
+                showMessage("Error: No se pudo encontrar el pedido para acelerar", "error")
+            }
+        }
+
+        function activateSpecialBots(orderId, accelerationType) {
+            // Simular activación de bots especiales
+            console.log(`🚀 Activando bots especiales para pedido ORD-${orderId}`)
+            console.log(`⚡ Tipo de aceleración: ${accelerationType}`)
+            
+            // Aquí se conectaría con el sistema real de bots
+            // Por ahora solo simulamos la activación
+            const botCounts = {
+                turbo: 50,
+                super: 100,
+                instant: 200
+            }
+            
+            console.log(`🤖 Activando ${botCounts[accelerationType]} bots especiales`)
+            
+            // Simular progreso acelerado
+            setTimeout(() => {
+                updateOrderProgress(orderId, accelerationType)
+            }, 1000)
+        }
+
+        function updateOrderProgress(orderId, accelerationType) {
+            // Simular progreso acelerado del pedido
+            const progressRates = {
+                turbo: 2,    // 2% cada segundo
+                super: 5,    // 5% cada segundo  
+                instant: 10  // 10% cada segundo
+            }
+            
+            const rate = progressRates[accelerationType]
+            let currentProgress = 0
+            
+            const progressInterval = setInterval(() => {
+                currentProgress += rate
+                
+                if (currentProgress >= 100) {
+                    currentProgress = 100
+                    clearInterval(progressInterval)
+                    
+                    // Marcar pedido como completado
+                    for (const user of users) {
+                        if (user.orders) {
+                            for (const order of user.orders) {
+                                if (order.id.toString() === orderId.toString()) {
+                                    order.status = 'completed'
+                                    order.progress = 100
+                                    order.completedAt = new Date().toISOString()
+                                    break
+                                }
+                            }
+                        }
+                    }
+                    
+                    localStorage.setItem("jorlingUsers", JSON.stringify(users))
+                    loadRecentOrders()
+                    
+                    showMessage(`¡Pedido ORD-${orderId} completado con aceleración masiva!`, "success")
+                }
+                
+                console.log(`📊 Progreso del pedido ORD-${orderId}: ${currentProgress}%`)
+            }, 1000)
+        }
+
+        function showRefundModal(orderId, username, service, price) {
+            selectedOrderData = { id: orderId, username, service, price }
+            
+            document.getElementById("refundOrderId").value = `ORD-${orderId}`
+            document.getElementById("refundUserName").value = username
+            document.getElementById("refundService").value = service
+            document.getElementById("refundAmount").value = `$${price.toFixed(4)}`
+            
+            closeModal("orderSearchModal")
+            document.getElementById("refundModal").style.display = "block"
+        }
+
+        function processRefund() {
+            if (!selectedOrderData) {
+                showMessage("Error: No hay datos de pedido seleccionados", "error")
+                return
+            }
+
+            const reason = document.getElementById("refundReason").value
+            const otherReason = document.getElementById("otherReason").value
+
+            if (!reason) {
+                showMessage("Por favor selecciona un motivo para el reembolso", "error")
+                return
+            }
+
+            if (reason === "other" && !otherReason.trim()) {
+                showMessage("Por favor especifica el motivo del reembolso", "error")
+                return
+            }
+
+            // Buscar y actualizar el pedido
+            let orderFound = false
+            for (const user of users) {
+                if (user.orders) {
+                    for (const order of user.orders) {
+                        if (order.id.toString() === selectedOrderData.id.toString()) {
+                            // Procesar reembolso
+                            order.status = 'refunded'
+                            order.refundedAt = new Date().toISOString()
+                            order.refundReason = reason === "other" ? otherReason : reason
+                            order.refundedBy = "admin"
+
+                            // Añadir el monto al saldo del usuario
+                            user.balance = (user.balance || 0) + selectedOrderData.price
+
+                            orderFound = true
+                            break
+                        }
+                    }
+                }
+                if (orderFound) break
+            }
+
+            if (orderFound) {
+                // Guardar cambios
+                localStorage.setItem("jorlingUsers", JSON.stringify(users))
+
+                // Registrar el reembolso
+                const refundRecord = {
+                    orderId: selectedOrderData.id,
+                    username: selectedOrderData.username,
+                    amount: selectedOrderData.price,
+                    reason: reason === "other" ? otherReason : reason,
+                    processedAt: new Date().toISOString(),
+                    processedBy: "admin"
+                }
+
+                let refunds = JSON.parse(localStorage.getItem("jorlingRefunds")) || []
+                refunds.push(refundRecord)
+                localStorage.setItem("jorlingRefunds", JSON.stringify(refunds))
+
+                // Actualizar displays
+                loadUsers()
+                loadStats()
+                loadRecentOrders()
+
+                // Cerrar modal y mostrar éxito
+                closeModal("refundModal")
+                showMessage(`Reembolso procesado exitosamente. $${selectedOrderData.price.toFixed(4)} añadidos al saldo de ${selectedOrderData.username}`, "success")
+
+                selectedOrderData = null
+            } else {
+                showMessage("Error: No se pudo encontrar el pedido para reembolsar", "error")
+            }
+        }
+
+        function showQuickRecharge() {
+            document.getElementById("quickRechargeModal").style.display = "block"
+            loadUserSuggestions()
+        }
+
+        function loadUserSuggestions() {
+            const searchInput = document.getElementById("quickUserSearch")
+            const suggestionsDiv = document.getElementById("userSuggestions")
+
+            const searchTerm = searchInput.value.toLowerCase()
+            if (searchTerm.length < 2) {
+                suggestionsDiv.innerHTML = ""
+                return
+            }
+
+            const filteredUsers = users.filter(
+                (user) => user.username.toLowerCase().includes(searchTerm) || user.email.toLowerCase().includes(searchTerm),
+            )
+
+            const suggestionsHTML = filteredUsers
+                .map(
+                    (user) => `
+                <div class="suggestion-item" onclick="selectUser('${user.username}')">
+                    <strong>${user.username}</strong> (${user.email}) - $${(user.balance || 0).toFixed(2)}
+                </div>
+            `,
+                )
+                .join("")
+
+            suggestionsDiv.innerHTML = suggestionsHTML
+        }
+
+        function selectUser(username) {
+            document.getElementById("quickUserSearch").value = username
+            document.getElementById("userSuggestions").innerHTML = ""
+        }
+
+        function setQuickAmount(amount) {
+            document.getElementById("quickAmount").value = amount
+        }
+
+        function processQuickRecharge() {
+            const username = document.getElementById("quickUserSearch").value
+            const amount = parseFloat(document.getElementById("quickAmount").value)
+
+            if (!username || !amount || amount <= 0) {
+                showMessage("Por favor completa todos los campos correctamente", "error")
+                return
+            }
+
+            const userIndex = users.findIndex(
+                (u) => u.username.toLowerCase() === username.toLowerCase() || u.email.toLowerCase() === username.toLowerCase(),
+            )
+
+            if (userIndex === -1) {
+                showMessage("Usuario no encontrado", "error")
+                return
+            }
+
+            // Add balance
+            users[userIndex].balance = (users[userIndex].balance || 0) + amount
+            localStorage.setItem("jorlingUsers", JSON.stringify(users))
+
+            // Update displays
+            loadUsers()
+            loadStats()
+
+            // Close modal and clear form
+            closeModal("quickRechargeModal")
+            document.getElementById("quickRechargeForm").reset()
+
+            showMessage(`¡Recarga exitosa! Se añadieron $${amount.toFixed(2)} a ${users[userIndex].username}`, "success")
+        }
+
+        function showAddBalance(userId) {
+            selectedUserId = userId
+            const user = users.find((u) => u.id === userId)
+
+            document.getElementById("selectedUserName").value = user.username
+            document.getElementById("currentBalance").value = `$${(user.balance || 0).toFixed(2)}`
+            document.getElementById("amountToAdd").value = ""
+
+            document.getElementById("addBalanceModal").style.display = "block"
+        }
+
+        function processAddBalance() {
+            const amount = parseFloat(document.getElementById("amountToAdd").value)
+            if (amount <= 0) {
+                showMessage("La cantidad debe ser mayor a 0", "error")
+                return
+            }
+
+            // Find user and update balance
+            const userIndex = users.findIndex((u) => u.id === selectedUserId)
+            if (userIndex !== -1) {
+                users[userIndex].balance = (users[userIndex].balance || 0) + amount
+
+                // Save to localStorage
+                localStorage.setItem("jorlingUsers", JSON.stringify(users))
+
+                // Update displays
+                loadUsers()
+                loadStats()
+
+                // Close modal
+                closeModal("addBalanceModal")
+
+                showMessage(`Se añadieron $${amount.toFixed(2)} al usuario ${users[userIndex].username}`, "success")
+            }
+        }
+
+        function viewUserOrders(userId) {
+            const user = users.find((u) => u.id === userId)
+            if (!user.orders || user.orders.length === 0) {
+                showMessage("Este usuario no tiene pedidos", "error")
+                return
+            }
+
+            // Scroll to orders section and highlight user orders
+            document.querySelector(".recent-orders-admin").scrollIntoView({ behavior: "smooth" })
+            loadRecentOrders(userId)
+        }
+
+        function viewUserDetails(userId) {
+            closeModal("orderSearchModal")
+            const user = users.find((u) => u.id === userId)
+            if (user) {
+                // Scroll to user in the table
+                document.querySelector(".management-section").scrollIntoView({ behavior: "smooth" })
+                
+                // Filter to show only this user
+                displayUsers([user])
+                
+                showMessage(`Mostrando detalles de ${user.username}`, "success")
+            }
+        }
+
+        function loadRecentOrders(filterUserId = null) {
+            const tbody = document.getElementById("ordersTableBody")
+            let allOrders = []
+
+            users.forEach((user) => {
+                if (user.orders) {
+                    user.orders.forEach((order) => {
+                        allOrders.push({
+                            ...order,
+                            username: user.username,
+                            userId: user.id
+                        })
+                    })
+                }
+            })
+
+            // Filter by user if specified
+            if (filterUserId) {
+                const user = users.find((u) => u.id === filterUserId)
+                allOrders = allOrders.filter((order) => order.username === user.username)
+            }
+
+            // Sort by date (newest first)
+            allOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+
+            if (allOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #999;">No hay pedidos</td></tr>'
+                return
+            }
+
+            const serviceNames = {
+                instagram: "Instagram",
+                tiktok: "TikTok",
+                youtube: "YouTube",
+                facebook: "Facebook",
+                twitter: "X (Twitter)",
+                twitch: "Twitch",
+                telegram: "Telegram",
+            }
+
+            const statusText = {
+                pending: "Pendiente",
+                processing: "Procesando",
+                completed: "Completado",
+                failed: "Fallido",
+                refunded: "Reembolsado",
+                cancelled: "Cancelado"
+            }
+
+            const ordersHTML = allOrders
+                .map(
+                    (order) => `
+                    <tr>
+                        <td>ORD-${order.id}</td>
+                        <td>${order.username}</td>
+                        <td>${serviceNames[order.service] || order.service}</td>
+                        <td><a href="${order.url}" target="_blank" style="color: #4ecdc4;">${order.url.substring(0, 30)}...</a></td>
+                        <td>${order.quantity}</td>
+                        <td>$${order.price.toFixed(4)}</td>
+                        <td><span class="status-${order.status}">${statusText[order.status]}${order.accelerated ? ' 🚀' : ''}</span></td>
+                        <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td>
+                            ${order.status !== 'refunded' && order.status !== 'completed' && order.status !== 'cancelled' ? 
+                                `<button class="action-btn btn-acceleration" onclick="showMassAccelerationModal('${order.id}', '${order.username}', '${order.service}', ${order.quantity}, ${order.progress || 0})" title="Aceleración Masiva">
+                                    <i class="fas fa-rocket"></i>
+                                </button>
+                                <button class="action-btn btn-refund" onclick="showRefundModal('${order.id}', '${order.username}', '${order.service}', ${order.price})" title="Procesar Reembolso">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button class="action-btn btn-cancel" onclick="showCancelOrderModal('${order.id}', '${order.username}', '${order.service}', ${order.price})" title="Cancelar Pedido">
+                                    <i class="fas fa-times"></i>
+                                </button>` : ''
+                            }
+                            <button class="action-btn btn-view" onclick="viewUserDetails(${order.userId})" title="Ver Usuario">
+                                <i class="fas fa-user"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `,
+                )
+                .join("")
+
+            tbody.innerHTML = ordersHTML
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none"
+            
+            // Clear forms when closing
+            if (modalId === "massAccelerationModal") {
+                document.getElementById("massAccelerationForm").reset()
+                document.getElementById("accelerationOtherReasonGroup").style.display = "none"
+                selectedOrderData = null
+            }
+            if (modalId === "refundModal") {
+                document.getElementById("refundForm").reset()
+                document.getElementById("otherReasonGroup").style.display = "none"
+                selectedOrderData = null
+            }
+            if (modalId === "cancelOrderModal") {
+                document.getElementById("cancelOrderForm").reset()
+                document.getElementById("cancelOtherReasonGroup").style.display = "none"
+                selectedOrderData = null
+            }
+            if (modalId === "deleteAccountModal") {
+                document.getElementById("deleteAccountForm").reset()
+                document.getElementById("deleteOtherReasonGroup").style.display = "none"
+                selectedUserId = null
+            }
+            if (modalId === "orderSearchModal") {
+                document.getElementById("orderSearchForm").reset()
+                document.getElementById("orderSearchResults").innerHTML = ""
+            }
+        }
+
+        function showMessage(text, type = "success") {
+            const messageElement = document.getElementById(type + "Message")
+            const textElement = document.getElementById(type + "Text")
+
+            textElement.textContent = text
+            messageElement.style.display = "flex"
+
+            setTimeout(() => {
+                messageElement.style.display = "none"
+            }, 5000)
+        }
+
+        function refreshData() {
+            loadUsers()
+            loadStats()
+            loadRecentOrders()
+            showMessage("Datos actualizados correctamente", "success")
+        }
+
+        function exportUsers() {
+            const csvContent =
+                "data:text/csv;charset=utf-8," +
+                "ID,Usuario,Email,Saldo,Pedidos,Fecha Registro\n" +
+                users
+                    .map(
+                        (user) =>
+                            `${user.id},${user.username},${user.email},${(user.balance || 0).toFixed(2)},${user.orders ? user.orders.length : 0},${new Date(user.createdAt).toLocaleDateString()}`,
+                    )
+                    .join("\n")
+
+            const encodedUri = encodeURI(csvContent)
+            const link = document.createElement("a")
+            link.setAttribute("href", encodedUri)
+            link.setAttribute("download", `usuarios_jorling_${new Date().toISOString().split("T")[0]}.csv`)
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+
+            showMessage("Archivo de usuarios exportado exitosamente", "success")
+        }
+
+        function logout() {
+            localStorage.removeItem("adminAuth")
+            window.location.href = "index.html"
+        }
+
+        // Actualizar window.onclick para incluir los nuevos modales
+        window.onclick = (event) => {
+            const modals = ["addBalanceModal", "quickRechargeModal", "orderSearchModal", "refundModal", "cancelOrderModal", "deleteAccountModal", "massAccelerationModal"]
+            modals.forEach((modalId) => {
+                const modal = document.getElementById(modalId)
+                if (event.target === modal) {
+                    closeModal(modalId)
+                }
+            })
+        }
+
+        // Auto-refresh data every 30 seconds
+        setInterval(() => {
+            loadUsers()
+            loadStats()
+            loadRecentOrders()
+        }, 30000)
+
+        function showCancelOrderModal(orderId, username, service, price) {
+            selectedOrderData = { id: orderId, username, service, price }
+            
+            document.getElementById("cancelOrderId").value = `ORD-${orderId}`
+            document.getElementById("cancelUserName").value = username
+            document.getElementById("cancelService").value = service
+            document.getElementById("cancelAmount").value = `$${price.toFixed(4)}`
+            
+            document.getElementById("cancelOrderModal").style.display = "block"
+        }
+
+        function showDeleteAccountModal(userId) {
+            const user = users.find((u) => u.id === userId)
+            if (!user) return
+
+            selectedUserId = userId
+            
+            document.getElementById("deleteUserName").value = user.username
+            document.getElementById("deleteUserEmail").value = user.email
+            document.getElementById("deleteUserBalance").value = `$${(user.balance || 0).toFixed(2)}`
+            document.getElementById("deleteUserOrders").value = user.orders ? user.orders.length : 0
+            
+            document.getElementById("deleteAccountModal").style.display = "block"
+        }
+
+        function processCancelOrder() {
+            if (!selectedOrderData) {
+                showMessage("Error: No hay datos de pedido seleccionados", "error")
+                return
+            }
+
+            const reason = document.getElementById("cancelReason").value
+            const otherReason = document.getElementById("cancelOtherReason").value
+            const shouldRefund = document.getElementById("refundOnCancel").checked
+
+            if (!reason) {
+                showMessage("Por favor selecciona un motivo para la cancelación", "error")
+                return
+            }
+
+            if (reason === "other" && !otherReason.trim()) {
+                showMessage("Por favor especifica el motivo de cancelación", "error")
+                return
+            }
+
+            // Buscar y actualizar el pedido
+            let orderFound = false
+            for (const user of users) {
+                if (user.orders) {
+                    for (const order of user.orders) {
+                        if (order.id.toString() === selectedOrderData.id.toString()) {
+                            // Cancelar pedido
+                            order.status = 'cancelled'
+                            order.cancelledAt = new Date().toISOString()
+                            order.cancelReason = reason === "other" ? otherReason : reason
+                            order.cancelledBy = "admin"
+
+                            // Reembolsar si está marcado
+                            if (shouldRefund) {
+                                user.balance = (user.balance || 0) + selectedOrderData.price
+                                order.refunded = true
+                                order.refundedAt = new Date().toISOString()
+                            }
+
+                            orderFound = true
+                            break
+                        }
+                    }
+                }
+                if (orderFound) break
+            }
+
+            if (orderFound) {
+                // Guardar cambios
+                localStorage.setItem("jorlingUsers", JSON.stringify(users))
+
+                // Registrar la cancelación
+                const cancelRecord = {
+                    orderId: selectedOrderData.id,
+                    username: selectedOrderData.username,
+                    amount: selectedOrderData.price,
+                    reason: reason === "other" ? otherReason : reason,
+                    refunded: shouldRefund,
+                    processedAt: new Date().toISOString(),
+                    processedBy: "admin"
+                }
+
+                let cancellations = JSON.parse(localStorage.getItem("jorlingCancellations")) || []
+                cancellations.push(cancelRecord)
+                localStorage.setItem("jorlingCancellations", JSON.stringify(cancellations))
+
+                // Actualizar displays
+                loadUsers()
+                loadStats()
+                loadRecentOrders()
+
+                // Cerrar modal y mostrar éxito
+                closeModal("cancelOrderModal")
+                const refundText = shouldRefund ? ` y $${selectedOrderData.price.toFixed(4)} reembolsados` : ""
+                showMessage(`Pedido cancelado exitosamente${refundText}`, "success")
+
+                selectedOrderData = null
+            } else {
+                showMessage("Error: No se pudo encontrar el pedido para cancelar", "error")
+            }
+        }
+
+        function processDeleteAccount() {
+            const confirmation = document.getElementById("deleteConfirmation").value
+            if (confirmation !== "ELIMINAR") {
+                showMessage("Debes escribir 'ELIMINAR' para confirmar la eliminación", "error")
+                return
+            }
+
+            const reason = document.getElementById("deleteReason").value
+            const otherReason = document.getElementById("deleteOtherReason").value
+            const cancelOrders = document.getElementById("cancelAllOrders").checked
+            const refundOrders = document.getElementById("refundAllOrders").checked
+
+            if (!reason) {
+                showMessage("Por favor selecciona un motivo para la eliminación", "error")
+                return
+            }
+
+            if (reason === "other" && !otherReason.trim()) {
+                showMessage("Por favor especifica el motivo de eliminación", "error")
+                return
+            }
+
+            const userIndex = users.findIndex((u) => u.id === selectedUserId)
+            if (userIndex === -1) {
+                showMessage("Error: Usuario no encontrado", "error")
+                return
+            }
+
+            const user = users[userIndex]
+            let refundAmount = 0
+
+            // Cancelar y reembolsar pedidos si está marcado
+            if (cancelOrders && user.orders) {
+                user.orders.forEach(order => {
+                    if (order.status === 'pending' || order.status === 'processing') {
+                        order.status = 'cancelled'
+                        order.cancelledAt = new Date().toISOString()
+                        order.cancelReason = 'account_deletion'
+                        order.cancelledBy = "admin"
+
+                        if (refundOrders) {
+                            refundAmount += order.price
+                            order.refunded = true
+                            order.refundedAt = new Date().toISOString()
+                        }
+                    }
+                })
+            }
+
+            // Registrar la eliminación
+            const deleteRecord = {
+                userId: user.id,
+                username: user.username,
+                email: user.email,
+                balance: user.balance || 0,
+                totalOrders: user.orders ? user.orders.length : 0,
+                refundAmount: refundAmount,
+                reason: reason === "other" ? otherReason : reason,
+                deletedAt: new Date().toISOString(),
+                deletedBy: "admin"
+            }
+
+            let deletions = JSON.parse(localStorage.getItem("jorlingDeletions")) || []
+            deletions.push(deleteRecord)
+            localStorage.setItem("jorlingDeletions", JSON.stringify(deletions))
+
+            // Eliminar usuario
+            users.splice(userIndex, 1)
+            localStorage.setItem("jorlingUsers", JSON.stringify(users))
+
+            // Actualizar displays
+            loadUsers()
+            loadStats()
+            loadRecentOrders()
+
+            // Cerrar modal y mostrar éxito
+            closeModal("deleteAccountModal")
+            const refundText = refundAmount > 0 ? ` Se reembolsaron $${refundAmount.toFixed(4)} por pedidos cancelados.` : ""
+            showMessage(`Cuenta de ${deleteRecord.username} eliminada permanentemente.${refundText}`, "success")
+
+            selectedUserId = null
+        }
+
+        // Actualizar statusText para incluir cancelled
+        const statusText = {
+            pending: "Pendiente",
+            processing: "Procesando",
+            completed: "Completado",
+            failed: "Fallido",
+            refunded: "Reembolsado",
+            cancelled: "Cancelado"
+        }
+    </script>
+
+    <style>
+        .search-results {
+            margin-top: 20px;
+        }
+
+        .order-result {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid #4ecdc4;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .order-details p {
+            margin: 8px 0;
+            color: #fff;
+        }
+
+        .order-details strong {
+            color: #4ecdc4;
+        }
+
+        .order-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-acceleration {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-acceleration:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+        }
+
+        .btn-refund {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-refund:hover {
+            background: #ff5252;
+        }
+
+        .btn-view-user, .btn-view {
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-view-user:hover, .btn-view:hover {
+            background: #45b7aa;
+        }
+
+        .status-pending { color: #ffa726; }
+        .status-processing { color: #42a5f5; }
+        .status-completed { color: #66bb6a; }
+        .status-failed { color: #ef5350; }
+        .status-refunded { color: #ab47bc; }
+        .status-cancelled { color: #ff9800; }
+
+        .acceleration-options {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid #ff9800;
+            border-radius: 8px;
+        }
+
+        .acceleration-options h4 {
+            color: #ff9800;
+            margin-bottom: 15px;
+        }
+
+        .acceleration-warning {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid #ff9800;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #ff9800;
+        }
+
+        .btn-acceleration.btn-submit {
+            background: linear-gradient(45deg, #ff9800, #ff5722);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-acceleration.btn-submit:hover {
+            background: linear-gradient(45deg, #f57c00, #e64a19);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+        }
+
+        .refund-warning, .cancel-warning, .delete-warning {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid #ff9800;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #ff9800;
+        }
+
+        .delete-warning {
+            background: rgba(244, 67, 54, 0.1);
+            border-color: #f44336;
+            color: #f44336;
+        }
+
+        .cancel-options, .delete-options {
+            margin: 15px 0;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"], .checkbox-label input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .confirmation-input {
+            margin: 20px 0;
+        }
+
+        .confirmation-input input {
+            background: rgba(244, 67, 54, 0.1);
+            border: 2px solid #f44336;
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .suggestions-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #4ecdc4;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(78, 205, 196, 0.2);
+            color: #fff;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .action-btn {
+            margin: 2px;
+            padding: 5px 8px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .btn-cancel {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .btn-cancel:hover {
+            background: #f57c00;
+        }
+
+        .btn-delete-user {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .btn-delete-user:hover {
+            background: #d32f2f;
+        }
+
+        .btn-danger {
+            background: #f44336 !important;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f !important;
+        }
+    </style>
+</body>
+</html>

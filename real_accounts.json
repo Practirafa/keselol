@@ -1,0 +1,94 @@
+{
+  "instagram": [
+    {
+      "username": "jorling_real_001",
+      "password": "TuPassword123!",
+      "email": "real001@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 20,
+      "proxy": null,
+      "notes": "Cuenta principal para Instagram"
+    },
+    {
+      "username": "jorling_real_002",
+      "password": "TuPassword456!",
+      "email": "real002@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 20,
+      "proxy": null,
+      "notes": "Cuenta secundaria para Instagram"
+    },
+    {
+      "username": "jorling_real_003",
+      "password": "TuPassword789!",
+      "email": "real003@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 20,
+      "proxy": null,
+      "notes": "Cuenta terciaria para Instagram"
+    }
+  ],
+  "facebook": [
+    {
+      "email": "facebook001@jorling.com",
+      "password": "FacebookPass123!",
+      "username": "Jorling Bot 001",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_likes": 0,
+      "max_daily_likes": 30,
+      "proxy": null,
+      "notes": "Cuenta principal para Facebook"
+    },
+    {
+      "email": "facebook002@jorling.com",
+      "password": "FacebookPass456!",
+      "username": "Jorling Bot 002",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_likes": 0,
+      "max_daily_likes": 30,
+      "proxy": null,
+      "notes": "Cuenta secundaria para Facebook"
+    }
+  ],
+  "tiktok": [
+    {
+      "username": "jorling_tiktok_001",
+      "password": "TikTokPass123!",
+      "email": "tiktok001@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 15,
+      "proxy": null,
+      "notes": "Cuenta principal para TikTok"
+    }
+  ],
+  "youtube": [
+    {
+      "email": "youtube001@jorling.com",
+      "password": "YouTubePass123!",
+      "channel_name": "Jorling Viewer 001",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_watch_hours": 0,
+      "max_daily_watch_hours": 6,
+      "proxy": null,
+      "notes": "Cuenta principal para YouTube"
+    }
+  ]
+}

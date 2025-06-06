@@ -1,0 +1,102 @@
+{
+  "instagram": [
+    {
+      "username": "jorling_bot_001",
+      "password": "SecurePassword123!",
+      "email": "bot001@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 50
+    },
+    {
+      "username": "jorling_bot_002",
+      "password": "SecurePassword456!",
+      "email": "bot002@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 50
+    },
+    {
+      "username": "jorling_bot_003",
+      "password": "SecurePassword789!",
+      "email": "bot003@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 50
+    }
+  ],
+  "tiktok": [
+    {
+      "username": "jorling_tiktok_001",
+      "password": "TikTokPass123!",
+      "email": "tiktok001@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 30
+    },
+    {
+      "username": "jorling_tiktok_002",
+      "password": "TikTokPass456!",
+      "email": "tiktok002@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 30
+    }
+  ],
+  "youtube": [
+    {
+      "username": "jorling_youtube_001",
+      "password": "YouTubePass123!",
+      "email": "youtube001@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_watch_hours": 0,
+      "max_daily_watch_hours": 8
+    },
+    {
+      "username": "jorling_youtube_002",
+      "password": "YouTubePass456!",
+      "email": "youtube002@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_watch_hours": 0,
+      "max_daily_watch_hours": 8
+    }
+  ],
+  "facebook": [
+    {
+      "username": "jorling_fb_001",
+      "password": "FacebookPass123!",
+      "email": "facebook001@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 40
+    }
+  ],
+  "twitter": [
+    {
+      "username": "jorling_twitter_001",
+      "password": "TwitterPass123!",
+      "email": "twitter001@jorling.com",
+      "active": true,
+      "created_date": "2025-01-01",
+      "last_used": null,
+      "daily_follows": 0,
+      "max_daily_follows": 60
+    }
+  ]
+}

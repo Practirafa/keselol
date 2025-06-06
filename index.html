@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jorling Seguidores - Impulsa tu Presencia Digital</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="electric-bg"></div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-bolt"></i> Jorling Seguidores</h1>
+                <p>Impulsa tu presencia digital</p>
+            </div>
+            <nav class="nav">
+                <button class="btn-login" onclick="showLogin()">Iniciar Sesión</button>
+                <button class="btn-register" onclick="showRegister()">Registrarse</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Potencia tu Alcance Digital</h2>
+                <p>Aumenta tus seguidores, likes y visualizaciones en todas las redes sociales</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fab fa-instagram"></i>
+                        <h3>Instagram</h3>
+                        <p>Seguidores reales y activos</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fab fa-tiktok"></i>
+                        <h3>TikTok</h3>
+                        <p>Visualizaciones y seguidores</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fab fa-youtube"></i>
+                        <h3>YouTube</h3>
+                        <p>Suscriptores y reproducciones</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fab fa-facebook"></i>
+                        <h3>Facebook</h3>
+                        <p>Likes y seguidores de página</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="container">
+            <h2>Estadísticas en Tiempo Real</h2>
+            <div class="stats-grid">
+                <div class="stat-flutter">
+                    <div class="flutter-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="flutter-content">
+                        <h3 id="totalViews">15,847,293</h3>
+                        <p>Visualizaciones Entregadas</p>
+                        <div class="flutter-bar">
+                            <div class="flutter-progress" style="width: 95%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-flutter">
+                    <div class="flutter-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="flutter-content">
+                        <h3 id="totalFollowers">2,456,891</h3>
+                        <p>Seguidores Entregados</p>
+                        <div class="flutter-bar">
+                            <div class="flutter-progress" style="width: 88%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-flutter">
+                    <div class="flutter-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="flutter-content">
+                        <h3 id="totalLikes">8,923,456</h3>
+                        <p>Likes Entregados</p>
+                        <div class="flutter-bar">
+                            <div class="flutter-progress" style="width: 92%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-flutter">
+                    <div class="flutter-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="flutter-content">
+                        <h3 id="satisfactionRate">99.8%</h3>
+                        <p>Satisfacción del Cliente</p>
+                        <div class="flutter-bar">
+                            <div class="flutter-progress" style="width: 99%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="live-counter">
+                <div class="counter-item">
+                    <span class="counter-number" id="liveViews">0</span>
+                    <span class="counter-label">Views en vivo</span>
+                </div>
+                <div class="counter-item">
+                    <span class="counter-number" id="liveFollowers">0</span>
+                    <span class="counter-label">Seguidores activos</span>
+                </div>
+                <div class="counter-item">
+                    <span class="counter-number" id="activeOrders">0</span>
+                    <span class="counter-label">Pedidos procesando</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Potential Section -->
+    <section class="potential-section">
+        <div class="container">
+            <h2>Tu Potencial Digital</h2>
+            <div class="potential-grid">
+                <div class="potential-card">
+                    <div class="potential-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Crecimiento Exponencial</h3>
+                    <p>Aumenta tu alcance hasta 10x más rápido con nuestros servicios premium</p>
+                    <div class="potential-stats">
+                        <span>+500% engagement promedio</span>
+                    </div>
+                </div>
+                
+                <div class="potential-card">
+                    <div class="potential-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Análisis Avanzado</h3>
+                    <p>Monitoreo en tiempo real de tu crecimiento y métricas de rendimiento</p>
+                    <div class="potential-stats">
+                        <span>Reportes cada 24h</span>
+                    </div>
+                </div>
+                
+                <div class="potential-card">
+                    <div class="potential-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>100% Seguro</h3>
+                    <p>Métodos seguros que protegen tu cuenta y garantizan resultados reales</p>
+                    <div class="potential-stats">
+                        <span>0% riesgo de ban</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section class="support">
+        <div class="container">
+            <h2>Soporte 24/7</h2>
+            <p>Nuestro equipo está disponible para ayudarte</p>
+            <div class="support-buttons">
+                <a href="https://wa.me/573234135603" target="_blank" class="support-btn whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp 1</span>
+                </a>
+                <a href="https://wa.me/573150233701" target="_blank" class="support-btn whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp 2</span>
+                </a>
+                <a href="https://t.me/Jorlingseguidores" target="_blank" class="support-btn telegram">
+                    <i class="fab fa-telegram"></i>
+                    <span>Telegram Official</span>
+                </a>
+                <a href="https://instagram.com/Jorlingjoseseguidores" target="_blank" class="support-btn instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Preview -->
+    <section class="services-preview">
+        <div class="container">
+            <h2>Nuestros Servicios</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <i class="fas fa-users"></i>
+                    <h3>Seguidores</h3>
+                    <p>Crece tu audiencia orgánicamente</p>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-eye"></i>
+                    <h3>Visualizaciones</h3>
+                    <p>Aumenta el alcance de tu contenido</p>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-clock"></i>
+                    <h3>Horas de Reproducción</h3>
+                    <p>Monetiza tu canal de YouTube</p>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Crecimiento</h3>
+                    <p>Estrategias para el éxito digital</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content electric-form">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="loginEmail" placeholder="Correo electrónico o nombre de usuario" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-bolt"></i> Iniciar Sesión
+                </button>
+                <div class="form-links">
+                    <a href="#" onclick="showForgotPassword()">¿Olvidaste tu contraseña?</a>
+                    <a href="#" onclick="showRegister(); closeModal('loginModal')">¿No tienes cuenta? Regístrate</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content electric-form">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2><i class="fas fa-user-plus"></i> Crear Cuenta</h2>
+            <form id="registerForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="registerUsername" placeholder="Nombre de usuario" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="registerEmail" placeholder="Correo electrónico" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="registerPassword" placeholder="Contraseña" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-bolt"></i> Crear Cuenta
+                </button>
+                <div class="form-links">
+                    <a href="#" onclick="showLogin(); closeModal('registerModal')">¿Ya tienes cuenta? Inicia sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotModal" class="modal">
+        <div class="modal-content electric-form">
+            <span class="close" onclick="closeModal('forgotModal')">&times;</span>
+            <h2><i class="fas fa-key"></i> Recuperar Contraseña</h2>
+            <form id="forgotForm">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="forgotEmail" placeholder="Correo electrónico registrado" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Enviar Enlace
+                </button>
+                <div class="form-links">
+                    <a href="#" onclick="showLogin(); closeModal('forgotModal')">Volver al inicio de sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <span id="successText"></span>
+    </div>
+
+    <!-- Error Message -->
+    <div id="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorText"></span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-bolt"></i> Jorling Seguidores</h3>
+                    <p>La plataforma más confiable para impulsar tu presencia digital</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/Jorlingjoseseguidores" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://t.me/Jorlingseguidores" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://wa.me/573234135603" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li>Instagram</li>
+                        <li>TikTok</li>
+                        <li>YouTube</li>
+                        <li>Facebook</li>
+                        <li>Twitter/X</li>
+                        <li>Twitch</li>
+                        <li>Telegram</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li>WhatsApp: +573234135603</li>
+                        <li>WhatsApp: +573150233701</li>
+                        <li>Telegram: @Jorlingseguidores</li>
+                        <li>Instagram: @Jorlingjoseseguidores</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>© 2025 Jorling Jose. Todos los derechos reservados.</p>
+                    <p>Jorling Seguidores - Impulsa tu presencia digital</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" onclick="showLogin()">Iniciar Sesión</a>
+                    <a href="#" onclick="showRegister()">Registrarse</a>
+                    <a href="admin.html">Panel Admin</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

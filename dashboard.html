@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Jorling Seguidores</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="electric-bg"></div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-bolt"></i> Jorling Seguidores</h1>
+            </div>
+            <div class="header-menu">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="#" onclick="showNewOrder()"><i class="fas fa-plus"></i> Nueva Orden</a>
+                    <a href="#" onclick="showOrders()"><i class="fas fa-list"></i> Pedidos</a>
+                    <a href="#" onclick="showAddFunds()"><i class="fas fa-wallet"></i> Añadir Fondos</a>
+                    <a href="#" onclick="showRefunds()"><i class="fas fa-undo"></i> Reembolsos</a>
+                    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard">
+        <div class="container">
+            <!-- User Info Cards -->
+            <div class="info-cards">
+                <div class="info-card electric-border">
+                    <div class="card-content">
+                        <i class="fas fa-user"></i>
+                        <h3>Usuario</h3>
+                        <p id="username">Cargando...</p>
+                    </div>
+                </div>
+                
+                <div class="info-card electric-border">
+                    <div class="card-content">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h3>Saldo</h3>
+                        <p id="balance">$0.00</p>
+                    </div>
+                </div>
+                
+                <div class="info-card electric-border">
+                    <div class="card-content">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Pedidos Realizados</h3>
+                        <p id="totalOrders">0</p>
+                    </div>
+                </div>
+                
+                <div class="info-card electric-border">
+                    <div class="card-content">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Pedidos Completados</h3>
+                        <p id="completedOrders">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Section -->
+            <div class="services-section">
+                <h2>Servicios Disponibles</h2>
+                <div class="services-toggle" onclick="toggleServices()">
+                    <div class="toggle-header">
+                        <span>Seleccionar Servicio</span>
+                        <i class="fas fa-chevron-down" id="servicesChevron"></i>
+                    </div>
+                    <div class="services-list" id="servicesList">
+            
+                        <!-- Instagram Services -->
+                        <div class="service-category">
+                            <h4><i class="fab fa-instagram" style="color: #E4405F;"></i> Instagram</h4>
+                            <div class="service-option" onclick="selectService('instagram_followers', 'Instagram Seguidores')">
+                                <span>📱 Seguidores</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_followers_latino', 'Instagram Seguidores Latinos')">
+                                <span>🌎 Seguidores Latinos</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_likes', 'Instagram Likes')">
+                                <span>❤️ Likes</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_likes_reels', 'Instagram Likes de Reels')">
+                                <span>🎬 Likes de Reels</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_views', 'Instagram Visualizaciones')">
+                                <span>👁️ Visualizaciones</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_views_stories', 'Instagram Visualizaciones de Stories')">
+                                <span>📖 Visualizaciones de Stories</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_views_reels', 'Instagram Visualizaciones de Reels')">
+                                <span>🎥 Visualizaciones de Reels</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_comments', 'Instagram Comentarios')">
+                                <span>💬 Comentarios</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_comments_custom', 'Instagram Comentarios Personalizados')">
+                                <span>✍️ Comentarios Personalizados</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('instagram_comments_latino', 'Instagram Comentarios Latinos')">
+                                <span>🌎 Comentarios Latinos</span>
+                            </div>
+                        </div>
+
+                        <!-- Facebook Services -->
+                        <div class="service-category">
+                            <h4><i class="fab fa-facebook" style="color: #1877F2;"></i> Facebook</h4>
+                            <div class="service-option" onclick="selectService('facebook_followers', 'Facebook Seguidores')">
+                                <span>👥 Seguidores</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_followers_latino', 'Facebook Seguidores Latinos')">
+                                <span>🌎 Seguidores Latinos</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_likes', 'Facebook Likes')">
+                                <span>👍 Likes</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_reactions', 'Facebook Reacciones')">
+                                <span>😍 Reacciones</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_shares', 'Facebook Compartidas')">
+                                <span>🔄 Compartidas</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_likes_reels', 'Facebook Likes de Reels')">
+                                <span>🎬 Likes de Reels</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_reactions_reels', 'Facebook Reacciones de Reels')">
+                                <span>😊 Reacciones de Reels</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_shares_reels', 'Facebook Compartidas de Reels')">
+                                <span>🔄 Compartidas de Reels</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_reactions_videos', 'Facebook Reacciones a Videos')">
+                                <span>🎥 Reacciones a Videos</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_live_hours', 'Facebook Horas de Transmisión en Vivo')">
+                                <span>📺 Horas de Transmisión en Vivo</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_comments', 'Facebook Comentarios')">
+                                <span>💬 Comentarios</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_comments_custom', 'Facebook Comentarios Personalizados')">
+                                <span>✍️ Comentarios Personalizados</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('facebook_comments_latino', 'Facebook Comentarios Latinos')">
+                                <span>🌎 Comentarios Latinos</span>
+                            </div>
+                        </div>
+
+                        <!-- YouTube Services -->
+                        <div class="service-category">
+                            <h4><i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube</h4>
+                            <div class="service-option" onclick="selectService('youtube_subscribers', 'YouTube Suscriptores')">
+                                <span>📺 Suscriptores</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_subscribers_latino', 'YouTube Suscriptores Latinos')">
+                                <span>🌎 Suscriptores Latinos</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_likes', 'YouTube Likes')">
+                                <span>👍 Likes</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_views', 'YouTube Visualizaciones')">
+                                <span>👁️ Visualizaciones</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_views_monetizable', 'YouTube Visualizaciones Monetizables')">
+                                <span>💰 Visualizaciones Monetizables</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_views_live', 'YouTube Visualizaciones de Transmisión')">
+                                <span>📡 Visualizaciones de Transmisión</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_watch_hours', 'YouTube Horas de Visualización')">
+                                <span>⏰ Horas de Visualización</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_comments', 'YouTube Comentarios')">
+                                <span>💬 Comentarios</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_comments_custom', 'YouTube Comentarios Personalizados')">
+                                <span>✍️ Comentarios Personalizados</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('youtube_comments_latino', 'YouTube Comentarios Latinos')">
+                                <span>🌎 Comentarios Latinos</span>
+                            </div>
+                        </div>
+
+                        <!-- TikTok Services -->
+                        <div class="service-category">
+                            <h4><i class="fab fa-tiktok" style="color: #000000;"></i> TikTok</h4>
+                            <div class="service-option" onclick="selectService('tiktok_followers', 'TikTok Seguidores')">
+                                <span>👥 Seguidores</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('tiktok_followers_latino', 'TikTok Seguidores Latinos')">
+                                <span>🌎 Seguidores Latinos</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('tiktok_likes', 'TikTok Likes')">
+                                <span>❤️ Likes</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('tiktok_views', 'TikTok Visualizaciones')">
+                                <span>👁️ Visualizaciones</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('tiktok_shares', 'TikTok Compartidas')">
+                                <span>🔄 Compartidas</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('tiktok_comments', 'TikTok Comentarios')">
+                                <span>💬 Comentarios</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('tiktok_comments_custom', 'TikTok Comentarios Personalizados')">
+                                <span>✍️ Comentarios Personalizados</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('tiktok_comments_latino', 'TikTok Comentarios Latinos')">
+                                <span>🌎 Comentarios Latinos</span>
+                            </div>
+                        </div>
+
+                        <!-- Twitter/X Services -->
+                        <div class="service-category">
+                            <h4><i class="fab fa-twitter" style="color: #1DA1F2;"></i> X (Twitter)</h4>
+                            <div class="service-option" onclick="selectService('twitter_followers', 'X Seguidores')">
+                                <span>🐦 Seguidores</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitter_followers_latino', 'X Seguidores Latinos')">
+                                <span>🌎 Seguidores Latinos</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitter_likes', 'X Likes')">
+                                <span>❤️ Likes</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitter_retweets', 'X Retweets')">
+                                <span>🔄 Retweets</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitter_comments', 'X Comentarios')">
+                                <span>💬 Comentarios</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitter_comments_custom', 'X Comentarios Personalizados')">
+                                <span>✍️ Comentarios Personalizados</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitter_comments_latino', 'X Comentarios Latinos')">
+                                <span>🌎 Comentarios Latinos</span>
+                            </div>
+                        </div>
+
+                        <!-- Twitch Services -->
+                        <div class="service-category">
+                            <h4><i class="fab fa-twitch" style="color: #9146FF;"></i> Twitch</h4>
+                            <div class="service-option" onclick="selectService('twitch_followers', 'Twitch Seguidores')">
+                                <span>🎮 Seguidores</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitch_followers_latino', 'Twitch Seguidores Latinos')">
+                                <span>🌎 Seguidores Latinos</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitch_views', 'Twitch Visualizaciones')">
+                                <span>👁️ Visualizaciones</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitch_comments', 'Twitch Comentarios')">
+                                <span>💬 Comentarios</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitch_comments_custom', 'Twitch Comentarios Personalizados')">
+                                <span>✍️ Comentarios Personalizados</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('twitch_comments_latino', 'Twitch Comentarios Latinos')">
+                                <span>🌎 Comentarios Latinos</span>
+                            </div>
+                        </div>
+
+                        <!-- Telegram Services -->
+                        <div class="service-category">
+                            <h4><i class="fab fa-telegram" style="color: #0088CC;"></i> Telegram</h4>
+                            <div class="service-option" onclick="selectService('telegram_members', 'Telegram Miembros')">
+                                <span>👥 Miembros</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('telegram_members_latino', 'Telegram Miembros Latinos')">
+                                <span>🌎 Miembros Latinos</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('telegram_views', 'Telegram Visualizaciones')">
+                                <span>👁️ Visualizaciones</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('telegram_reactions', 'Telegram Reacciones')">
+                                <span>👍 Reacciones</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('telegram_comments', 'Telegram Comentarios')">
+                                <span>💬 Comentarios</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('telegram_comments_custom', 'Telegram Comentarios Personalizados')">
+                                <span>✍️ Comentarios Personalizados</span>
+                            </div>
+                            <div class="service-option" onclick="selectService('telegram_comments_latino', 'Telegram Comentarios Latinos')">
+                                <span>🌎 Comentarios Latinos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Form -->
+            <div class="order-section" id="orderSection" style="display: none;">
+                <div class="order-form electric-form">
+                    <h3 id="selectedServiceTitle">Selecciona un servicio</h3>
+                    <form id="orderForm">
+                        <div class="input-group">
+                            <label for="serviceUrl">URL del perfil/contenido:</label>
+                            <input type="url" id="serviceUrl" placeholder="https://..." required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="quantity">Cantidad:</label>
+                            <input type="number" id="quantity" min="100" placeholder="Ingresa la cantidad (mínimo 100)" required>
+                            <small>Mínimo: 100 seguidores - Precio: $0.0096 por cada 100</small>
+                        </div>
+                        
+                        <div class="price-info">
+                            <p>Total a pagar: <span id="totalPrice">$0.00</span></p>
+                            <small style="color: #999;">Ingresa una cantidad para ver el precio total</small>
+                        </div>
+                        
+                        <button type="submit" class="btn-order">
+                            <i class="fas fa-bolt"></i> Realizar Pedido
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="recent-orders">
+                <h2>Pedidos Recientes</h2>
+                <div class="orders-list" id="ordersList">
+                    <p class="no-orders">No tienes pedidos aún</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="addFundsModal" class="modal">
+        <div class="modal-content electric-form">
+            <span class="close" onclick="closeModal('addFundsModal')">&times;</span>
+            <h2><i class="fas fa-wallet"></i> Añadir Fondos</h2>
+            <p>Contacta con nuestro soporte para añadir fondos a tu cuenta:</p>
+            <div class="support-buttons">
+                <a href="https://wa.me/573234135603" target="_blank" class="support-btn whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp 1</span>
+                </a>
+                <a href="https://wa.me/573150233701" target="_blank" class="support-btn whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp 2</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="successMessage" class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <span id="successText"></span>
+    </div>
+
+    <div id="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorText"></span>
+    </div>
+
+    <script>
+        // Variables globales
+let selectedService = null;
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+let users = JSON.parse(localStorage.getItem("jorlingUsers")) || [];
+let userIndex = users.findIndex(u => u.id === currentUser?.id);
+
+// Precios de servicios (por unidad)
+const servicePrices = {
+    // Instagram - Precio base: $0.015 por 100 unidades
+    instagram_followers: 0.00015,           // $0.015 por 100
+    instagram_followers_latino: 0.0002,     // $0.02 por 100 (premium)
+    instagram_likes: 0.00015,               // $0.015 por 100
+    instagram_likes_reels: 0.00015,         // $0.015 por 100
+    instagram_views: 0.00015,               // $0.015 por 100
+    instagram_views_stories: 0.00015,       // $0.015 por 100
+    instagram_views_reels: 0.00015,         // $0.015 por 100
+    instagram_comments: 0.0002,             // $0.02 por 100 (premium)
+    instagram_comments_custom: 0.0003,      // $0.03 por 100 (más premium)
+    instagram_comments_latino: 0.00025,     // $0.025 por 100
+    
+    // Facebook - Mismo precio base que Instagram
+    facebook_followers: 0.00015,            // $0.015 por 100
+    facebook_followers_latino: 0.0002,      // $0.02 por 100
+    facebook_likes: 0.00015,                // $0.015 por 100
+    facebook_reactions: 0.00015,            // $0.015 por 100
+    facebook_shares: 0.00015,               // $0.015 por 100
+    facebook_likes_reels: 0.00015,          // $0.015 por 100
+    facebook_reactions_reels: 0.00015,      // $0.015 por 100
+    facebook_shares_reels: 0.00015,         // $0.015 por 100
+    facebook_reactions_videos: 0.00015,     // $0.015 por 100
+    facebook_live_hours: 0.03,              // $3 por 100 horas
+    facebook_comments: 0.0002,              // $0.02 por 100
+    facebook_comments_custom: 0.0003,       // $0.03 por 100
+    facebook_comments_latino: 0.00025,      // $0.025 por 100
+    
+    // YouTube - Mismo precio base excepto horas de visualización
+    youtube_subscribers: 0.00015,           // $0.015 por 100
+    youtube_subscribers_latino: 0.0002,     // $0.02 por 100
+    youtube_likes: 0.00015,                 // $0.015 por 100
+    youtube_views: 0.00015,                 // $0.015 por 100
+    youtube_views_monetizable: 0.0002,      // $0.02 por 100 (premium)
+    youtube_views_live: 0.0002,             // $0.02 por 100
+    youtube_watch_hours: 0.03,              // $15 por 500 horas = $0.03 por hora
+    youtube_comments: 0.0002,               // $0.02 por 100
+    youtube_comments_custom: 0.0003,        // $0.03 por 100
+    youtube_comments_latino: 0.00025,       // $0.025 por 100
+    
+    // TikTok - Mismo precio base que Instagram
+    tiktok_followers: 0.00015,              // $0.015 por 100
+    tiktok_followers_latino: 0.0002,        // $0.02 por 100
+    tiktok_likes: 0.00015,                  // $0.015 por 100
+    tiktok_views: 0.00015,                  // $0.015 por 100
+    tiktok_shares: 0.00015,                 // $0.015 por 100
+    tiktok_comments: 0.0002,                // $0.02 por 100
+    tiktok_comments_custom: 0.0003,         // $0.03 por 100
+    tiktok_comments_latino: 0.00025,        // $0.025 por 100
+    
+    // Twitter/X - Mismo precio base que Instagram
+    twitter_followers: 0.00015,             // $0.015 por 100
+    twitter_followers_latino: 0.0002,       // $0.02 por 100
+    twitter_likes: 0.00015,                 // $0.015 por 100
+    twitter_retweets: 0.00015,              // $0.015 por 100
+    twitter_comments: 0.0002,               // $0.02 por 100
+    twitter_comments_custom: 0.0003,        // $0.03 por 100
+    twitter_comments_latino: 0.00025,       // $0.025 por 100
+    
+    // Twitch - Mismo precio base que Instagram
+    twitch_followers: 0.00015,              // $0.015 por 100
+    twitch_followers_latino: 0.0002,        // $0.02 por 100
+    twitch_views: 0.00015,                  // $0.015 por 100
+    twitch_comments: 0.0002,                // $0.02 por 100
+    twitch_comments_custom: 0.0003,         // $0.03 por 100
+    twitch_comments_latino: 0.00025,        // $0.025 por 100
+    
+    // Telegram - Mismo precio base que Instagram
+    telegram_members: 0.00015,              // $0.015 por 100
+    telegram_members_latino: 0.0002,        // $0.02 por 100
+    telegram_views: 0.00015,                // $0.015 por 100
+    telegram_reactions: 0.00015,            // $0.015 por 100
+    telegram_comments: 0.0002,              // $0.02 por 100
+    telegram_comments_custom: 0.0003,       // $0.03 por 100
+    telegram_comments_latino: 0.00025       // $0.025 por 100
+};
+
+// Inicializar cuando carga la página
+document.addEventListener("DOMContentLoaded", function() {
+    if (!currentUser) {
+        window.location.href = "index.html";
+        return;
+    }
+    loadUserData();
+    loadOrders();
+});
+
+// Función mejorada para seleccionar servicio
+function selectService(serviceType, serviceName) {
+    selectedService = serviceType;
+    
+    // CERRAR AUTOMÁTICAMENTE la barra de servicios - FORZADO
+    const servicesList = document.getElementById("servicesList");
+    const servicesChevron = document.getElementById("servicesChevron");
+    const servicesToggle = document.querySelector(".services-toggle");
+    
+    // Forzar cierre inmediato
+    servicesList.style.display = "none";
+    servicesList.style.visibility = "hidden";
+    servicesList.classList.remove("show");
+    servicesChevron.style.transform = "rotate(0deg)";
+    servicesToggle.classList.remove("active");
+    
+    // Actualizar título del servicio seleccionado
+    document.getElementById("selectedServiceTitle").textContent = `Servicio: ${serviceName}`;
+    
+    // Mostrar formulario de pedido
+    const orderSection = document.getElementById("orderSection");
+    orderSection.style.display = "block";
+    orderSection.style.visibility = "visible";
+    
+    // DESPLAZAMIENTO AUTOMÁTICO Y RÁPIDO al formulario
+    setTimeout(() => {
+        const orderSection = document.getElementById("orderSection");
+        orderSection.scrollIntoView({ 
+            behavior: "smooth", 
+            block: "center",
+            inline: "nearest"
+        });
+    }, 200);
+    
+    // Limpiar campos del formulario
+    document.getElementById("serviceUrl").value = "";
+    document.getElementById("quantity").value = "";
+    document.getElementById("totalPrice").textContent = "$0.00";
+    
+    // Configurar mínimos según el servicio
+    const quantityInput = document.getElementById("quantity");
+    const minimumInfo = document.querySelector(".input-group small");
+    
+    if (serviceType === 'youtube_watch_hours') {
+        quantityInput.min = "500";
+        quantityInput.placeholder = "Ingresa las horas (mínimo 500)";
+        minimumInfo.innerHTML = `Mínimo: 500 horas - Precio: $15 por 500 horas`;
+    } else if (serviceType.includes('views') && !serviceType.includes('live')) {
+        quantityInput.min = "100";
+        quantityInput.placeholder = "Ingresa las visualizaciones (mínimo 100)";
+        minimumInfo.innerHTML = `Mínimo: 100 visualizaciones - Precio: $0.015 por 100`;
+    } else {
+        quantityInput.min = "100";
+        quantityInput.placeholder = "Ingresa la cantidad (mínimo 100)";
+        minimumInfo.innerHTML = `Mínimo: 100 unidades - Precio: $0.015 por 100`;
+    }
+    
+    // Enfocar el campo de URL inmediatamente
+    setTimeout(() => {
+        const urlInput = document.getElementById("serviceUrl");
+        urlInput.focus();
+        urlInput.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+    
+    // Mostrar mensaje de éxito
+    showMessage(`✅ ${serviceName} seleccionado correctamente`, "success");
+}
+
+// Función para alternar servicios - MEJORADA
+function toggleServices() {
+    const servicesList = document.getElementById("servicesList");
+    const servicesChevron = document.getElementById("servicesChevron");
+    const servicesToggle = document.querySelector(".services-toggle");
+    
+    if (servicesList.style.display === "none" || servicesList.style.display === "") {
+        // Abrir lista
+        servicesList.style.display = "block";
+        servicesList.style.visibility = "visible";
+        servicesList.classList.add("show");
+        servicesChevron.style.transform = "rotate(180deg)";
+        servicesToggle.classList.add("active");
+    } else {
+        // Cerrar lista
+        servicesList.style.display = "none";
+        servicesList.style.visibility = "hidden";
+        servicesList.classList.remove("show");
+        servicesChevron.style.transform = "rotate(0deg)";
+        servicesToggle.classList.remove("active");
+    }
+}
+
+// Función para calcular precio en tiempo real
+function updatePrice() {
+    const quantity = parseInt(document.getElementById("quantity").value) || 0;
+    
+    if (!selectedService || quantity <= 0) {
+        document.getElementById("totalPrice").textContent = "$0.00";
+        return;
+    }
+    
+    let total = 0;
+    
+    // Cálculo especial para horas de visualización de YouTube
+    if (selectedService === 'youtube_watch_hours') {
+        if (quantity >= 3000) {
+            total = 120; // Precio fijo para 3000 horas
+        } else if (quantity >= 500) {
+            total = (quantity / 500) * 15; // $15 por cada 500 horas
+        } else {
+            total = (quantity / 500) * 15; // Proporcional para menos de 500 horas
+        }
+    } else {
+        // Para todos los demás servicios, precio por unidad × cantidad
+        const pricePerUnit = servicePrices[selectedService] || 0.00015;
+        total = quantity * pricePerUnit;
+    }
+    
+    document.getElementById("totalPrice").textContent = `$${total.toFixed(2)}`;
+}
+
+// Event listener para actualizar precio
+document.getElementById("quantity").addEventListener("input", updatePrice);
+
+// Función para cargar datos del usuario
+function loadUserData() {
+    if (userIndex !== -1) {
+        const userData = users[userIndex];
+        document.getElementById("username").textContent = userData.username;
+        document.getElementById("balance").textContent = `$${userData.balance.toFixed(2)}`;
+        document.getElementById("totalOrders").textContent = userData.orders?.length || 0;
+        
+        const completedOrders = userData.orders?.filter(order => order.status === "completed").length || 0;
+        document.getElementById("completedOrders").textContent = completedOrders;
+    }
+}
+
+// Función para cargar pedidos
+function loadOrders() {
+    const ordersList = document.getElementById("ordersList");
+    
+    if (userIndex === -1 || !users[userIndex].orders || users[userIndex].orders.length === 0) {
+        ordersList.innerHTML = '<p class="no-orders">No tienes pedidos aún</p>';
+        return;
+    }
+    
+    const ordersHTML = users[userIndex].orders.map(order => {
+        const statusClass = `status-${order.status}`;
+        const statusText = {
+            pending: "⏳ Pendiente",
+            processing: "🔄 Procesando", 
+            completed: "✅ Completado",
+            failed: "❌ Fallido"
+        };
+        
+        return `
+            <div class="order-item">
+                <div class="order-header">
+                    <span class="order-id">Pedido #${order.id}</span>
+                    <span class="order-status ${statusClass}">${statusText[order.status]}</span>
+                </div>
+                <div class="order-details">
+                    <p><strong>Servicio:</strong> ${order.service}</p>
+                    <p><strong>Cantidad:</strong> ${order.quantity}</p>
+                    <p><strong>Precio:</strong> $${order.price.toFixed(4)}</p>
+                    <p><strong>URL:</strong> ${order.url}</p>
+                    <p><strong>Fecha:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
+                </div>
+            </div>
+        `;
+    }).join("");
+    
+    ordersList.innerHTML = ordersHTML;
+}
+
+// Manejar envío del formulario
+document.getElementById("orderForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    if (!selectedService) {
+        showMessage("❌ Por favor selecciona un servicio", "error");
+        return;
+    }
+    
+    const url = document.getElementById("serviceUrl").value;
+    const quantity = parseInt(document.getElementById("quantity").value);
+    const pricePerUnit = servicePrices[selectedService];
+    const totalPrice = quantity * pricePerUnit;
+    
+    // Verificar saldo
+    if (users[userIndex].balance < totalPrice) {
+        showMessage("❌ Saldo insuficiente. Añade fondos a tu cuenta.", "error");
+        showAddFunds();
+        return;
+    }
+    
+    // Crear nuevo pedido
+    const newOrder = {
+        id: Date.now(),
+        service: selectedService,
+        url: url,
+        quantity: quantity,
+        price: totalPrice,
+        status: "pending",
+        createdAt: new Date().toISOString()
+    };
+    
+    // Actualizar datos del usuario
+    users[userIndex].orders = users[userIndex].orders || [];
+    users[userIndex].orders.push(newOrder);
+    users[userIndex].balance -= totalPrice;
+    
+    // Guardar en localStorage
+    localStorage.setItem("jorlingUsers", JSON.stringify(users));
+    localStorage.setItem("currentUser", JSON.stringify(users[userIndex]));
+    
+    // Actualizar UI
+    loadUserData();
+    loadOrders();
+    
+    // Limpiar formulario
+    document.getElementById("orderForm").reset();
+    document.getElementById("orderSection").style.display = "none";
+    selectedService = null;
+    
+    showMessage("🚀 ¡Pedido realizado exitosamente! Los bots comenzarán a trabajar inmediatamente.", "success");
+    
+    // Simular procesamiento del pedido
+    setTimeout(() => {
+        processOrder(newOrder.id);
+    }, 2000);
+});
+
+// Procesar pedido
+function processOrder(orderId) {
+    const orderIndex = users[userIndex].orders.findIndex(order => order.id === orderId);
+    if (orderIndex !== -1) {
+        users[userIndex].orders[orderIndex].status = "processing";
+        localStorage.setItem("jorlingUsers", JSON.stringify(users));
+        loadOrders();
+        
+        // Completar pedido
+        setTimeout(() => {
+            users[userIndex].orders[orderIndex].status = "completed";
+            localStorage.setItem("jorlingUsers", JSON.stringify(users));
+            loadOrders();
+            showMessage("🎉 ¡Pedido completado exitosamente!", "success");
+        }, 8000);
+    }
+}
+
+// Funciones del menú
+function toggleMenu() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.classList.toggle("show");
+}
+
+function showNewOrder() {
+    // Solo cerrar el menú, no hacer scroll automático
+    toggleMenu();
+    showMessage("💡 Selecciona un servicio de la lista para comenzar", "success");
+}
+
+function showOrders() {
+    const ordersSection = document.querySelector(".recent-orders");
+    ordersSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    toggleMenu();
+}
+
+function showAddFunds() {
+    document.getElementById("addFundsModal").style.display = "block";
+    toggleMenu();
+}
+
+function showRefunds() {
+    showMessage("📞 Contacta con soporte para solicitar reembolsos", "success");
+    toggleMenu();
+}
+
+function logout() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "index.html";
+}
+
+// Funciones de modal
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
+
+// Función para mostrar mensajes
+function showMessage(text, type = "success") {
+    const messageElement = document.getElementById(type + "Message");
+    const textElement = document.getElementById(type + "Text");
+    
+    textElement.textContent = text;
+    messageElement.style.display = "flex";
+    
+    setTimeout(() => {
+        messageElement.style.display = "none";
+    }, 4000);
+}
+
+// Cerrar menús al hacer clic fuera
+document.addEventListener("click", function(event) {
+    const menu = document.getElementById("dropdownMenu");
+    const toggle = document.querySelector(".menu-toggle");
+    
+    if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+        menu.classList.remove("show");
+    }
+    
+    // Cerrar servicios al hacer clic fuera
+    const servicesList = document.getElementById("servicesList");
+    const servicesToggle = document.querySelector(".services-toggle");
+    
+    if (!servicesToggle.contains(event.target)) {
+        servicesList.style.display = "none";
+        servicesList.classList.remove("show");
+        document.getElementById("servicesChevron").style.transform = "rotate(0deg)";
+    }
+});
+
+// Cerrar modales al hacer clic fuera
+window.onclick = function(event) {
+    const modals = ["addFundsModal"];
+    modals.forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (event.target === modal) {
+            closeModal(modalId);
+        }
+    });
+};
+
+// Auto-refresh cada 30 segundos
+setInterval(() => {
+    const updatedUsers = JSON.parse(localStorage.getItem("jorlingUsers")) || [];
+    const updatedUserIndex = updatedUsers.findIndex(u => u.id === currentUser?.id);
+    
+    if (updatedUserIndex !== -1) {
+        users = updatedUsers;
+        userIndex = updatedUserIndex;
+        loadUserData();
+        localStorage.setItem("currentUser", JSON.stringify(users[userIndex]));
+    }
+}, 30000);
+    </script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
